@@ -1,0 +1,65 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ar_experiences",
+  "info": {
+    "singularName": "ar-experience",
+    "pluralName": "ar-experiences",
+    "displayName": "Ar Experience"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "targetImage": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "model3D": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "prefabName": {
+      "type": "string",
+      "required": true
+    },
+    "physicalSize": {
+      "type": "decimal",
+      "default": 0.1
+    },
+    "scale": {
+      "type": "json"
+    },
+    "position": {
+      "type": "json"
+    },
+    "rotation": {
+      "type": "json"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

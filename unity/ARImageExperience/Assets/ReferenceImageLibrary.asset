@@ -23,8 +23,8 @@ MonoBehaviour:
     m_SerializedTextureGuid:
       m_GuidLow: 6526933727575090535
       m_GuidHigh: 483034708583369018
-    m_Size: {x: 0.1, y: 0.18024272}
-    m_SpecifySize: 1
+    m_Size: {x: 0.055480745, y: 0.1}
+    m_SpecifySize: 0
     m_Name: Villentretenmerth
     m_Texture: {fileID: 0}
   - m_SerializedGuid:
@@ -34,6 +34,6 @@ MonoBehaviour:
       m_GuidLow: 1334306143531536376
       m_GuidHigh: 9478015337110508521
     m_Size: {x: 0.1, y: 0.18261905}
-    m_SpecifySize: 1
+    m_SpecifySize: 0
     m_Name: Bovine
     m_Texture: {fileID: 0}
