@@ -110,13 +110,13 @@ public class DynamicARImageTrackingManager : MonoBehaviour
 
             var attrs = experience.attributes;
 
-            if (attrs.targetImage?.data?.attributes?.url == null)
+            if (attrs.targetImage?.attributes?.url == null)
             {
                 Debug.LogWarning($"Experience '{attrs.name}' has no target image");
                 continue;
             }
 
-            string imageUrl = attrs.targetImage.data.attributes.url;
+            string imageUrl = attrs.targetImage.attributes.url;
             Texture2D texture = null;
             bool imageLoaded = false;
 

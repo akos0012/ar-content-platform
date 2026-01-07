@@ -77,8 +77,8 @@ public class ARExperienceAttributes
 {
     public string name;
     public string description;
-    public MediaWrapper targetImage;
-    public MediaWrapper model3D;
+    public MediaData targetImage;
+    public MediaData model3D;
     public string prefabName;
     public float physicalSize;
     public Vector3Data scale;
