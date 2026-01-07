@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115cf5e758fde9d41b54044caf21eb9b, type: 3}
   m_Name: StrapiConfig
   m_EditorClassIdentifier: Assembly-CSharp::StrapiConfig
-  apiBaseUrl: http://localhost:1337
+  apiBaseUrl: https://funny-friends-8823fb0cc0.strapiapp.com
   apiToken: 
   arExperiencesEndpoint: /api/ar-experiences
