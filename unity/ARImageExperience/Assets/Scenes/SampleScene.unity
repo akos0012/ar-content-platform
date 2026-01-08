@@ -682,7 +682,7 @@ MonoBehaviour:
   strapiClient: {fileID: 1611388249}
   prefabMappings:
   - prefabName: Bovine
-    prefab: {fileID: 919132149155446097, guid: 0bc5871a2b70cbf4b9697098317f3d49, type: 3}
+    prefab: {fileID: 3385500955771020024, guid: 347e748614c67f5428b31e76da62c00e, type: 3}
   - prefabName: Villentretenmerth
     prefab: {fileID: 1189122542923378253, guid: 6f182b4791a67ca4ca2aa211baf39bca, type: 3}
 --- !u!114 &1611388249
