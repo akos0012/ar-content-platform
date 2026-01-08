@@ -105,18 +105,21 @@ public class DynamicARImageTrackingManager : MonoBehaviour
 
         foreach (var experience in experiences)
         {
-            if (experience.attributes == null || !experience.attributes.isActive)
-                continue;
-
-            var attrs = experience.attributes;
-
-            if (attrs.targetImage?.attributes?.url == null)
+            if (!experience.isActive)
             {
-                Debug.LogWarning($"Experience '{attrs.name}' has no target image");
+                Debug.Log($"Skipping inactive experience: {experience.name}");
                 continue;
             }
 
-            string imageUrl = attrs.targetImage.attributes.url;
+            if (experience.targetImage == null || string.IsNullOrEmpty(experience.targetImage.url))
+            {
+                Debug.LogWarning($"Experience '{experience.name}' has no target image");
+                continue;
+            }
+
+            string imageUrl = experience.targetImage.url;
+            Debug.Log($"Loading image for '{experience.name}' from: {imageUrl}");
+
             Texture2D texture = null;
             bool imageLoaded = false;
 
@@ -126,10 +129,11 @@ public class DynamicARImageTrackingManager : MonoBehaviour
                 {
                     texture = tex;
                     imageLoaded = true;
+                    Debug.Log($"Image downloaded successfully for '{experience.name}': {tex.width}x{tex.height}");
                 },
                 (error) =>
                 {
-                    Debug.LogError($"Failed to download image for '{attrs.name}': {error}");
+                    Debug.LogError($"Failed to download image for '{experience.name}': {error}");
                     imageLoaded = true;
                 }
             );
@@ -137,15 +141,19 @@ public class DynamicARImageTrackingManager : MonoBehaviour
             yield return new WaitUntil(() => imageLoaded);
 
             if (texture == null)
+            {
+                Debug.LogError($"Texture is null for '{experience.name}'");
                 continue;
+            }
 
             downloadedTextures.Add(texture);
 
-            float physicalSize = attrs.physicalSize > 0 ? attrs.physicalSize : 0.1f;
+            float physicalSize = experience.physicalSize > 0 ? experience.physicalSize : 0.1f;
+            Debug.Log($"Adding image '{experience.name}' to library with physical size: {physicalSize}");
 
             var imageJobState = imageLibrary.ScheduleAddImageWithValidationJob(
                 texture,
-                attrs.name,
+                experience.name,
                 physicalSize
             );
 
@@ -158,35 +166,38 @@ public class DynamicARImageTrackingManager : MonoBehaviour
 
             if (imageJobState.status == AddReferenceImageJobStatus.Success)
             {
-                Debug.Log($"Successfully added image '{attrs.name}' to library");
-                experienceData[attrs.name] = experience;
+                Debug.Log($"Successfully added image '{experience.name}' to library");
+                experienceData[experience.name] = experience;
 
-                GameObject prefab = GetPrefabByName(attrs.prefabName);
+                GameObject prefab = GetPrefabByName(experience.prefabName);
                 if (prefab != null)
                 {
                     var arObject = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-                    arObject.name = attrs.name;
+                    arObject.name = experience.name;
 
-                    if (attrs.scale != null)
+                    if (experience.scale != null)
                     {
-                        arObject.transform.localScale = attrs.scale.ToVector3();
+                        arObject.transform.localScale = experience.scale.ToVector3();
+                        Debug.Log($"Set scale for '{experience.name}': {experience.scale.ToVector3()}");
                     }
 
                     arObject.SetActive(false);
-                    arObjects[attrs.name] = arObject;
+                    arObjects[experience.name] = arObject;
+                    Debug.Log($"Created AR object for '{experience.name}' with prefab '{experience.prefabName}'");
                 }
                 else
                 {
-                    Debug.LogWarning($"Prefab '{attrs.prefabName}' not found for experience '{attrs.name}'");
+                    Debug.LogWarning($"Prefab '{experience.prefabName}' not found for experience '{experience.name}'");
                 }
             }
             else
             {
-                Debug.LogError($"Failed to add image '{attrs.name}': {imageJobState.status}");
+                Debug.LogError($"Failed to add image '{experience.name}': {imageJobState.status}");
             }
         }
 
         trackedImageManager.referenceLibrary = imageLibrary;
+        Debug.Log($"Image library updated with {experienceData.Count} images");
     }
 
     private GameObject GetPrefabByName(string prefabName)
@@ -227,16 +238,21 @@ public class DynamicARImageTrackingManager : MonoBehaviour
         string imageName = trackedImage.referenceImage.name;
 
         if (!arObjects.ContainsKey(imageName))
+        {
+            Debug.LogWarning($"No AR object found for tracked image: {imageName}");
             return;
+        }
 
         GameObject arObject = arObjects[imageName];
 
         if (trackedImage.trackingState == TrackingState.Limited || trackedImage.trackingState == TrackingState.None)
         {
+            Debug.Log($"Image '{imageName}' tracking state: {trackedImage.trackingState} - hiding object");
             arObject.SetActive(false);
             return;
         }
 
+        Debug.Log($"Image '{imageName}' tracked! State: {trackedImage.trackingState}");
         arObject.SetActive(true);
         arObject.transform.position = trackedImage.transform.position;
         arObject.transform.rotation = trackedImage.transform.rotation;
@@ -244,13 +260,13 @@ public class DynamicARImageTrackingManager : MonoBehaviour
         if (experienceData.ContainsKey(imageName))
         {
             var experience = experienceData[imageName];
-            if (experience.attributes.position != null)
+            if (experience.position != null)
             {
-                arObject.transform.localPosition += experience.attributes.position.ToVector3();
+                arObject.transform.localPosition += experience.position.ToVector3();
             }
-            if (experience.attributes.rotation != null)
+            if (experience.rotation != null)
             {
-                arObject.transform.localRotation *= Quaternion.Euler(experience.attributes.rotation.ToVector3());
+                arObject.transform.localRotation *= Quaternion.Euler(experience.rotation.ToVector3());
             }
         }
     }

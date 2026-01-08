@@ -42,6 +42,7 @@ public class ImageFormats
 public class MediaFile
 {
     public int id;
+    public string documentId;
     public string name;
     public string alternativeText;
     public string caption;
@@ -57,6 +58,7 @@ public class MediaFile
     public string provider;
     public string createdAt;
     public string updatedAt;
+    public string publishedAt;
 }
 
 [Serializable]
@@ -70,6 +72,26 @@ public class MediaData
 public class MediaWrapper
 {
     public MediaData data;
+}
+
+[Serializable]
+public class ARExperienceData
+{
+    public int id;
+    public string documentId;
+    public string name;
+    public string description;
+    public MediaFile targetImage;
+    public MediaFile model3D;
+    public string prefabName;
+    public float physicalSize;
+    public Vector3Data scale;
+    public Vector3Data position;
+    public Vector3Data rotation;
+    public bool isActive;
+    public string createdAt;
+    public string updatedAt;
+    public string publishedAt;
 }
 
 [Serializable]
@@ -91,7 +113,7 @@ public class ARExperienceAttributes
 }
 
 [Serializable]
-public class ARExperienceData
+public class ARExperienceDataV4
 {
     public int id;
     public ARExperienceAttributes attributes;
