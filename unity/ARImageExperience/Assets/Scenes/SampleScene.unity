@@ -682,9 +682,11 @@ MonoBehaviour:
   strapiClient: {fileID: 1611388249}
   prefabMappings:
   - prefabName: Bovine
-    prefab: {fileID: 3385500955771020024, guid: 347e748614c67f5428b31e76da62c00e, type: 3}
+    prefab: {fileID: 8510251161127639654, guid: 7883ee515cb1ab64693f62195be418e9, type: 3}
   - prefabName: Villentretenmerth
     prefab: {fileID: 1189122542923378253, guid: 6f182b4791a67ca4ca2aa211baf39bca, type: 3}
+  - prefabName: SignCoders
+    prefab: {fileID: 3385500955771020024, guid: 347e748614c67f5428b31e76da62c00e, type: 3}
 --- !u!114 &1611388249
 MonoBehaviour:
   m_ObjectHideFlags: 0
